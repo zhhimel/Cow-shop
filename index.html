@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Online Cattle Shopping</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTelXzhjhZ2wp37yJWWPVKf3uaGUEbSBlqC3A&usqp=CAU"
+                    alt="Cow Shopping Logo" height="100" width="90">
+            </div>
+            <nav class="x">
+                <ul class="y" id="nav">
+                    <li><a href="index.html" class="cta-button">Home</a></li>
+                    <li><a href="#shop" class="cta-button">Shop</a></li>
+                    <li><a href="#about" class="cta-button">About</a></li>
+                    <li><a href="#contact" class="cta-button">Contact</a></li>
+                    <li><a href="login.html" class="cta-button" id="login-button">Login/Signup</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Cattle Shopping</h1>
+                <p>Discover a world of magnificent cows</p>
+                <a href="#" class="cta-button">Shop Now</a>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+        <section class="main-container">
+            <h2 style="text-align: center; font-size: 45px; background-color: #1cac78; color:white" id="shop">Cows
+                Category</h2>
+            <div class="filter-container">
+                <div class="category-head">
+                    <ul>
+                        <div class="category-title active" id="all">
+                            <li>All</li>
+                            <span><i class="fas fa-border-all"></i></span>
+                        </div>
+                        <div class="category-title" id="shahiwal">
+                            <li>Shahiwal</li>
+                            <span><i class="fas fa-theater-masks"></i></span>
+                        </div>
+                        <div class="category-title" id="gir">
+                            <li>Gir</li>
+                            <span><i class="fas fa-landmark"></i></span>
+                        </div>
+                        <div class="category-title" id="deshal">
+                            <li>Deshal</li>
+                            <span><i class="fas fa-chart-area"></i></span>
+                        </div>
+                        <div class="category-title" id="brahama">
+                            <li>Brahama</li>
+                            <span><i class="fas fa-coins"></i></span>
+                        </div>
+
+                    </ul>
+                </div>
+
+
+                <div class="posts-collect">
+                    <div class="posts-main-container" class="box" id="cow-container">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center;" id="load-more"> load more </div>
+
+        </section>
+
+
+
+
+        <!--about section starts-->
+
+
+        <section class="about" id="about">
+
+            <h1 style="text-align: center;" classs="heading">About Us</h1>
+
+            <div class="row">
+
+                <div class="image half-width">
+                    <img src="Cows/pexels-pixabay-248337.jpg" alt="bg" height="400" width="700">
+                </div>
+
+                <div class="content half-width">
+                    <h1>What makes our website special?</h1>
+                    <p>Thounsands of cows are here for you. you can buy cows as your own choice.During the holy
+                        Eid-ul-Azha, it is a tradition to visit different markets and buy the beloved animal. Now this
+                        market has a touch of modernity. Traders are selling millions of animals from farms through
+                        online platforms. Buyers can buy the animal of their choice sitting at home. The name of this
+                        modern management is ‘Digital Cattle Market’. During the Eid-ul-Azha of 2020, the official
+                        development of digital market took place in the country.
+                    </p>
+                    <a href="#" class="btn">learn more</a>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!--about section ends-->
+
+        <!--contact section starts-->
+
+        <section id="contact" class="conct">
+            <h1 style="text-align: center;">Contact Us</h1>
+            <div class="contact">
+                <div class="half-width">
+                    <h3> Address</h3>
+                    <h4> Pahartoli, Raozan, Chittagong</h4>
+                </div>
+                <div class="half-width">
+                    <h4>Email: mdsiddikulimamk@gmail.com</h4>
+                    <h4>Phone No: 01959750641</h4>
+                    <a href="https://www.facebook.com/mdsiddikulimam.kawser/" class="connect">Here Our
+                        Facebook</a><br><br>
+                    <a href="https://www.facebook.com/mdsiddikulimam.kawser/" class="connect">Here Our
+                        Instagram</a><br><br>
+                </div>
+            </div>
+
+        </section>
+
+        <!--contact section ends-->
+
+    </main>
+    <script src="script.js"></script>
+
+
+    <script>
+        var data;
+        async function fetchData() {
+            try {
+                const response = await axios.get("http://localhost:5000/cowdetails");
+                data = response.data;
+                const cowContainer = document.querySelector("#cow-container");
+                cowContainer.classList.add("cow-design");
+                data.forEach(cow => {
+                    const cowDiv = document.createElement("div");
+                    cowDiv.classList.add("card");
+                    const cowImage = document.createElement("img"); 
+                    imageUrl = `/Cows/${cow.image}.jpg`
+                    cowImage.src = imageUrl;
+                    cowImage.alt = cow.name;
+                    const price = document.createElement("h3");
+                    price.textContent = `Price: ${cow.price}`;
+                    const cowHeading = document.createElement("h3");
+                    cowHeading.textContent =`Name: ${cow.name}`;
+                    const cowDescription = document.createElement("p");
+                    const cartButton=document.createElement("button");
+                
+                    
+                    cowDiv.appendChild(cowImage);
+                    cowDiv.appendChild(price);
+                    cowDiv.appendChild(cowHeading);
+                    cowDiv.appendChild(cowDescription);
+                    
+                    cowContainer.appendChild(cowDiv);
+                });
+            } catch (error) {
+                console.error("Error fetching cow details:", error);
+            }
+        }
+        fetchData();
+
+        var admin = localStorage.getItem("admin");
+        if (admin === "true") {
+            const parentUL = document.querySelector('#nav');
+            const newLI = document.createElement('li');
+            const newA = document.createElement('a');
+            newA.href = "admin.html";
+            newA.classList.add('cta-button');
+            newA.textContent = "Admin";
+            newLI.appendChild(newA);
+            parentUL.appendChild(newLI);
+        }
+        // let loadMoreBtn = document.querySelector('#load-more');
+        // let currentItem = 12;
+
+        // loadMoreBtn.onclick = () => {
+        //     let boxes = [...document.querySelectorAll('.posts-collect .posts-main-container .box')];
+        //     for (var i = currentItem; i < currentItem + 12; i++) {
+        //         boxes[i].style.display = 'inline-block';
+        //     }
+        //     currentItem += 12;
+
+        //     if (currentItem >= boxes.length) {
+        //         loadMoreBtn.style.display = 'none';
+        //     }
+        // }
+        var IsLoggedIn = localStorage.getItem("loggedIn")
+
+        var login = document.getElementById("login-button");
+        login.addEventListener('click', () => {
+            if (IsLoggedIn === "true") {
+                localStorage.setItem("loggedIn", "false")
+                login.innerHTML = "Log In/Signup"
+                localStorage.setItem("admin", "false");
+                login.setAttribute("href", "./login.html");
+            }
+
+        })
+        if (IsLoggedIn === "true") {
+            login.innerHTML = "Log Out"
+            login.setAttribute("href", "#");
+
+        }
+
+    </script>
+
+    <footer>
+        <p>&copy; 2023 Cow Shopping. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

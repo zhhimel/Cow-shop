@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+
+<body>
+  <header>
+    <a href="index.html" style="color:white; font-size:20px; text-decoration: none;">Home</a>
+    <h1 style="text-align: center;">Admin Panel</h1>
+  </header>
+  <div class="admin">
+    <div class="half-width">
+      <h1>Create Your New Cattle</h1>
+      <form action="" method="post" id="create-cow-form" enctype="multipart/form-data">
+        <input name="id" placeholder="ID"><br>
+        <br>
+        <input name="name" placeholder="Enter Name"><br>
+        <br>
+        <input name="price" placeholder="Cow Price"><br>
+        <br>
+        <input name="cowimage" placeholder="Cow ID for Image"> <br>
+        <br>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+
+    <form class="half-width" id="customize-cow-details">
+      <h1>Customize Cow Details</h1>
+      <input name="id" placeholder="Cow ID"><br>
+      <br>
+      <input name="name" placeholder="Enter Cow Name"><br>
+      <br>
+      <input name="price" placeholder="Cow Price"><br>
+      <br>
+      <input name="cowimage" placeholder="Cow ID for Image"><br>
+      <br>
+      <button type="submit">Update Cow</button>
+
+    </form>
+    <form id="delete">
+      <input name="delete" placeholder="Give ID to delete cow details">
+      <button type="submit">Delete</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById("create-cow-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new URLSearchParams(new FormData(event.target));
+      axios.post('http://localhost:5000/cowdetails', formData)
+        .then(response => {
+          if (response.data === "exist") {
+            alert("There is a cow with this id.")
+          }
+          else if (response.data === "notexist") {
+            alert("Cow details added successfully")
+          }
+        }) 
+        .catch(error => {
+          alert("Error");
+        });
+    }) 
+    document.getElementById("customize-cow-details").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new URLSearchParams(new FormData(event.target));
+      axios.put('http://localhost:5000/cowdetails', formData)
+        .then(response => {
+          if (response.data === "exist") {
+            alert("Food updated successfully!")
+          }
+          else if (response.data === "notexist") {
+            alert("There is no cow with this id.")
+          }
+        })
+        .catch(error => {
+          alert("Error");
+        });
+
+    })
+    document.getElementById("delete").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const inputElement = document.querySelector('input[name="delete"]');
+      const id = inputElement.value;
+      const confirm = window.confirm("Are you sure want to delete it?")
+      if (confirm) {
+        axios.delete(`http://localhost:5000/cowdetails?id=${id}`)
+          .then(response => {
+            if (response.data === "deleted") {
+              alert("Food deleted successfully!")
+            }
+            else if (response.data === "Error") {
+              alert("There is no cow with this id.")
+            }
+          })
+          .catch(error => {
+            alert("Error");
+          });
+      }
+      else {
+        return;
+      }
+
+    })
+  </script>
+</body>
+
+</html>
